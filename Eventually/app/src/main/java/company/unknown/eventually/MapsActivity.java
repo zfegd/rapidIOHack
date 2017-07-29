@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
+import android.view.WindowManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -55,6 +57,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
             AlertDialog dialog = builder.create();
+            WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+
+            wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+            wmlp.x = 100;   //x position
+            wmlp.y = 100;   //y position
+            wmlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            wmlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
             dialog.show();
 
         } else {

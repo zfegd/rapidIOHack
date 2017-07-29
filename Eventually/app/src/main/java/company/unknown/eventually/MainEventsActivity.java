@@ -27,6 +27,8 @@ public class MainEventsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // TODO sHOW LISt of events
     }
 
     @Override
@@ -34,6 +36,11 @@ public class MainEventsActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_events, menu);
         return true;
+    }
+
+    public void testMethod(View view){
+        Intent intent = new Intent(this, CurrentEventActivity.class);
+        startActivity(intent);
     }
 
     @Override
