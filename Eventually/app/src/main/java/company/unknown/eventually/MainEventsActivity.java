@@ -27,6 +27,8 @@ public class MainEventsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // TODO sHOW LISt of events
     }
 
     @Override

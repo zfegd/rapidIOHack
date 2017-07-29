@@ -49,7 +49,8 @@
         <activity
             android:name=".AddEventActivity"
             android:label="@string/title_activity_add_event"
-            android:parentActivityName=".MainEventsActivity">
+            android:parentActivityName=".MainEventsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="company.unknown.eventually.MainEventsActivity" />
