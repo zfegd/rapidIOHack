@@ -55,6 +55,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="company.unknown.eventually.MainEventsActivity" />
         </activity>
+        <activity
+            android:name=".CurrentEventActivity"
+            android:label="@string/title_activity_current_event"
+            android:parentActivityName=".MainEventsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="company.unknown.eventually.MainEventsActivity" />
+        </activity>
     </application>
 
 </manifest>
