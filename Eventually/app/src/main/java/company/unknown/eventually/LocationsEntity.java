@@ -4,13 +4,10 @@ package company.unknown.eventually;
  * Created by Wen Rui on 7/29/2017.
  */
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-
 import com.google.gson.annotations.SerializedName;
 
 
-public class LocationsEntity extends BaseObservable {
+public class LocationsEntity {
 
 
     @SerializedName("mapid")
