@@ -38,6 +38,11 @@ public class MainEventsActivity extends AppCompatActivity {
         return true;
     }
 
+    public void testMethod(View view){
+        Intent intent = new Intent(this, CurrentEventActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

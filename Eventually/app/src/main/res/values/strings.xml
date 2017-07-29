@@ -16,5 +16,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- UI String elements -->
+    <string name="event_early_dialog_message">This event won\'t be starting for a while yet,
+    so you won\'t see your friends\' locations</string>
+    <string name="ok">Got it!</string>
     <string name="title_activity_current_event">CurrentEventActivity</string>
 </resources>
