@@ -1,7 +1,9 @@
 package company.unknown.eventually;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,10 +39,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //TODO: let event = fetchEvent
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Add a marker at event location and move the camera
+        LatLng eventLocation = new LatLng(-34, 151); // TODO: event.lat, event.lng
+        mMap.addMarker(new MarkerOptions().position(eventLocation).title("New event")); // TODO: event.title
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
+
+        if (true) { //TODO: time.now < event.time + 30
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.event_early_dialog_message);
+            builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        } else {
+            // for user : event.users
+                // mMap.addMarker(new MarkerOptions().position(new LatLng(user.lat, user.lng)).title(user.name)
+        }
     }
+
+
 }
