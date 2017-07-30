@@ -10,6 +10,8 @@ import android.view.View;
 
 public class CurrentEventActivity extends AppCompatActivity {
 
+    private String eventID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,11 +19,13 @@ public class CurrentEventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        eventID = getIntent().getStringExtra("Event ID");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void gotoMap(View view){
         Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("Event ID", eventID);
         startActivity(intent);
     }
 

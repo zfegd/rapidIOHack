@@ -23,6 +23,7 @@ import io.rapid.RapidCollectionReference;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private String eventID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         RapidCollectionReference<EventsEntity> events = Rapid.getInstance().collection("events", EventsEntity.class);
 
+        //might be the wrong datastring
+        eventID = getIntent().getStringExtra("Event ID");
 
     }
 
