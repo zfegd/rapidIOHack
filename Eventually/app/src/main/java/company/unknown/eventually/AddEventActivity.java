@@ -73,10 +73,10 @@ public class AddEventActivity extends AppCompatActivity {
         }
     }
     public void eventAdded(View view){
-        if(! isValid()){
-            Toast.makeText(this,"Please input a valid date and time",Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if(! isValid()){
+//            Toast.makeText(this,"Please input a valid date and time",Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         String datetimeLong = dateAndTimeParser(mTime.getText(),mDate.getText());
         // TODO add item
         // Add location object to the locations collection
@@ -92,7 +92,8 @@ public class AddEventActivity extends AppCompatActivity {
         //TODO: args are mName.getText(), {} new LocationsEntity(id, place.getName(),place.getLatLng().latitude, place.getLatLng().longitude),datetimeLong)
         AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
-        pIntent = PendingIntent.getService(this, 0, timeTrackerIntent, 0);
+        timeTrackerIntent.putExtra("Event ID", event.id);
+        pIntent = PendingIntent.getService(this, 0, timeTrackerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
         manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3 * 1000, pIntent);
