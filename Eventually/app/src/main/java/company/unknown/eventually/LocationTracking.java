@@ -75,6 +75,7 @@ public class LocationTracking extends IntentService {
                 if (location != null) {
                     Log.i(null, location.toString());
                     mCurrentLocation = location;
+                    LocationsEntity l = new LocationsEntity(eventId, "", "New location", (float) location.getLatitude(), (float) location.getLongitude());
                 } else {
                     Log.e(null, "no location");
                 }
