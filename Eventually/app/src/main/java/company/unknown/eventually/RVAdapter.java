@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.EventsViewHolder>{

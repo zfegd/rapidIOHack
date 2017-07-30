@@ -41,7 +41,7 @@ public class MainEventsActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 205;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_GET_ACCOUNTS = 206;
-    private List<EventsEntity> events;
+    private List<EventsEntity> theEvents;
     private RecyclerView rv;
 
     @Override
@@ -77,27 +77,30 @@ public class MainEventsActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_ACCESS_GET_ACCOUNTS);
         }
 
+
         rv = (RecyclerView)findViewById(R.id.eventsListView);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
 
-        initializeData();
-        initializeAdapter();
-
-        //Following template below, can edit to meet our needs
-
         final LinkedList<EventsEntity> toprint = new LinkedList<>();
 
-        RapidCollectionReference<EventsEntity> events = Rapid.getInstance().collection("events", EventsEntity.class);
+        final RapidCollectionReference<EventsEntity> events = Rapid.getInstance().collection("events", EventsEntity.class);
         events.subscribeWithListUpdates(new RapidCallback.CollectionUpdates<EventsEntity>() {
             @Override
             public void onValueChanged(List<RapidDocument<EventsEntity>> rapidDocuments, ListUpdate listUpdate) {
                 for (RapidDocument<EventsEntity> rapidDocument : rapidDocuments) {
                     toprint.addLast(new EventsEntity(rapidDocument.getBody().id, rapidDocument.getBody().name,
                             rapidDocument.getBody().userids, rapidDocument.getBody().locationid,rapidDocument.getBody().date));}
+                Log.e("Size of toprint:", String.valueOf(toprint.size()));
+                initializeData(toprint);
+                initializeAdapter();
             }
         });
-        
+
+
+
+        //Following template below, can edit to meet our needs
+
         // TODO transform linkedlist (toprint) to a readable format
 
     }
@@ -151,15 +154,20 @@ public class MainEventsActivity extends AppCompatActivity {
         return "";
     }
 
-    private void initializeData() {
-        events = new ArrayList<>();
-        events.add(new EventsEntity("1","Soccer",null,"name","1000000"));
-        events.add(new EventsEntity("2","Swimming",null,"21","1003000"));
-        events.add(new EventsEntity("3","Soccer",null,"22","21000000"));
+    private void initializeData(LinkedList<EventsEntity> toprint) {
+        theEvents = new ArrayList<>();
+//        events.add(new EventsEntity("1","Soccer",null,"name","1000000"));
+//        events.add(new EventsEntity("2","Swimming",null,"21","1003000"));
+//        events.add(new EventsEntity("3","Soccer",null,"22","21000000"));
+
+        for(EventsEntity print: toprint){
+            theEvents.add(print);
+        }
+
     }
 
     private void initializeAdapter() {
-        RVAdapter adapter = new RVAdapter(events);
+        RVAdapter adapter = new RVAdapter(theEvents);
         rv.setAdapter(adapter);
     }
 
