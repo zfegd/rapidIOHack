@@ -44,7 +44,8 @@ public class AddEventActivity extends AppCompatActivity {
         Intent timeTrackerIntent = new Intent(context, LocationTracking.class);
         pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
 
-        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), null); //TODO: fetchEvent
+        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
+
         manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
 
         //TODO UPDATE COLLECTION
@@ -213,6 +214,212 @@ public class AddEventActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    /**
+     *
+     * @param time
+     * @param date
+     * @return string value of time since 1 jan 1970 in milliseconds
+     */
+    private String dateAndTimeParser(CharSequence time, CharSequence date){
+        int totaltime = 0;
+        int timeLen = time.length();
+        CharSequence hour;
+        CharSequence minutes;
+        int hrs = 0;
+        int mins = 0;
+        if(timeLen == 4) {
+            hour = time.subSequence(0,2);
+            hrs =Integer.parseInt(hour.toString());
+            minutes = time.subSequence(2,4);
+            mins = Integer.parseInt(minutes.toString());
+        }
+        else if(timeLen == 5){
+            hour = time.subSequence(0,2);
+            hrs =Integer.parseInt(hour.toString());
+            minutes = time.subSequence(3,5);
+            mins = Integer.parseInt(minutes.toString());
+        }
+        totaltime = 60000*(mins +60*hrs);
+
+        final int TIME_IN_A_DAY_IN_MS = 60000*(24*60);
+        int noDays = 0;
+        int dateLen = date.length();
+
+        CharSequence month;
+        CharSequence day;
+        CharSequence year = null;
+        int mth = 0;
+        int days = 0;
+        int yrs = 0;
+
+        if(charsequenceContains('/',date)||charsequenceContains('.',date)||charsequenceContains('-',date)){
+            int connectors = noOfInstances('/',date) + noOfInstances('.',date) + noOfInstances('-',date);
+            if(date.charAt(1) == '/' || date.charAt(1) == '.' || date.charAt(1) == '-'){
+                if(date.charAt(3) == '/' || date.charAt(3) == '.' || date.charAt(3) == '-'){
+                    month = date.subSequence(0,1);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(2,3);
+                    days = Integer.parseInt(day.toString());
+                    if(dateLen==6){
+                        year = date.subSequence(4,6);
+                    }
+                    else if(dateLen==8){
+                        year = date.subSequence(4,8);
+                    }
+                    yrs =Integer.parseInt(year.toString());
+                }
+                else if(date.charAt(4) == '/' || date.charAt(4) == '.' || date.charAt(4) == '-'){
+                    month = date.subSequence(0,1);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(2,4);
+                    days = Integer.parseInt(day.toString());
+                    if(dateLen==7){
+                        year = date.subSequence(5,7);
+                    }
+                    else if(dateLen==9){
+                        year = date.subSequence(5,9);
+                    }
+                    yrs =Integer.parseInt(year.toString());
+                }
+            }
+            else if(date.charAt(2) == '/' || date.charAt(2) == '.' || date.charAt(2) == '-'){
+                if(date.charAt(4) == '/' || date.charAt(4) == '.' || date.charAt(4) == '-'){
+                    month = date.subSequence(0,2);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(3,4);
+                    days = Integer.parseInt(day.toString());
+                    if(dateLen==7){
+                        year = date.subSequence(5,7);
+                    }
+                    else if(dateLen==9){
+                        year = date.subSequence(5,9);
+                    }
+                    yrs =Integer.parseInt(year.toString());
+                }
+                else if(date.charAt(5) == '/' || date.charAt(5) == '.' || date.charAt(5) == '-'){
+                    month = date.subSequence(0,2);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(3,4);
+                    days = Integer.parseInt(day.toString());
+                    if(dateLen==8){
+                        year = date.subSequence(6,8);
+                    }
+                    else if(dateLen==10){
+                        year = date.subSequence(6,10);
+                    }
+                    yrs =Integer.parseInt(year.toString());
+                }
+            }
+        }
+        else {
+            switch (dateLen){
+                case 4:
+                    month = date.subSequence(0,1);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(1,2);
+                    days = Integer.parseInt(day.toString());
+                    year = date.subSequence(2,4);
+                    yrs =Integer.parseInt(year.toString());
+                    break;
+                case 6:
+                    month = date.subSequence(0,2);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(2,4);
+                    days = Integer.parseInt(day.toString());
+                    year = date.subSequence(4,6);
+                    yrs =Integer.parseInt(year.toString());
+                    break;
+                case 8:
+                    month = date.subSequence(0,2);
+                    mth =Integer.parseInt(month.toString());
+                    day = date.subSequence(2,4);
+                    days = Integer.parseInt(day.toString());
+                    year = date.subSequence(4,8);
+                    yrs =Integer.parseInt(year.toString());
+                    break;
+            }
+        }
+
+        int currYrCalc = 1970;
+        while(currYrCalc<yrs){
+            noDays = noDays+365;
+            if(currYrCalc % 4 == 0){
+                noDays++;
+            }
+            currYrCalc++;
+        }
+        switch (mth){
+            case 1:
+                noDays = noDays + days;
+                break;
+            case 2:
+                noDays = 31 + days;
+                break;
+            case 3:
+                noDays = 31 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 4:
+                noDays = 31*2 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 5:
+                noDays = 31*2 + 30 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 6:
+                noDays = 31*3 + 30 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 7:
+                noDays = 31*3 + 30*2 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 8:
+                noDays = 31*4 + 30*2 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 9:
+                noDays = 31*4 + 30*3 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 10:
+                noDays = 31*5 + 30*3 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 11:
+                noDays = 31*5 + 30*4 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+            case 12:
+                noDays = 31*6 + 30*5 + 28 + days;
+                if(yrs % 4 == 0){
+                    noDays++;
+                }
+                break;
+        }
+        totaltime = totaltime + noDays*TIME_IN_A_DAY_IN_MS;
+        return String.valueOf(totaltime);
     }
 
     /**

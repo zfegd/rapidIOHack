@@ -45,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         String u[] = {};
-        EventsEntity event = new EventsEntity("", "", u, new LocationsEntity("","",0f,0f), null); //TODO: fetchEvent
+        EventsEntity event = new EventsEntity("", "", u, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
 
         // Add a marker at event location and move the camera
         LatLng eventLocation = new LatLng(event.location.lat, event.location.lon);
