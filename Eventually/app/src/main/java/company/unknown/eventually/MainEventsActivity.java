@@ -93,6 +93,8 @@ public class MainEventsActivity extends AppCompatActivity {
 
     public void testMethod(View view){
         Intent intent = new Intent(this, CurrentEventActivity.class);
+        //TODO
+        intent.putExtra("Event ID","todo");
         startActivity(intent);
     }
 
