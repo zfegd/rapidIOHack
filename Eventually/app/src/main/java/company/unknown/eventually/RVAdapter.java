@@ -47,7 +47,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.EventsViewHolder>{
     public void onBindViewHolder(RVAdapter.EventsViewHolder holder, int i) {
         holder.eventName.setText(eventsEntityList.get(i).name);
         holder.eventTime.setText(eventsEntityList.get(i).date);
-        holder.eventLocation.setText(eventsEntityList.get(i).location.mapid);
+        holder.eventLocation.setText(eventsEntityList.get(i).locationid);
     }
 
     @Override

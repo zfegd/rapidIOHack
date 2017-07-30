@@ -74,9 +74,9 @@ public class MainEventsActivity extends AppCompatActivity {
 
     private void initializeData() {
         events = new ArrayList<>();
-        events.add(new EventsEntity("1","Soccer",null,(new LocationsEntity("map","a",3.20f,4.80f)),"1000000"));
-        events.add(new EventsEntity("2","Swimming",null,(new LocationsEntity("map","b",3.20f,4.20f)),"1003000"));
-        events.add(new EventsEntity("3","Soccer",null,(new LocationsEntity("map","c",3.20f,4.80f)),"21000000"));
+        events.add(new EventsEntity("1","Soccer",null,"name","1000000"));
+        events.add(new EventsEntity("2","Swimming",null,"21","1003000"));
+        events.add(new EventsEntity("3","Soccer",null,"22","21000000"));
     }
 
     private void initializeAdapter() {
@@ -91,10 +91,10 @@ public class MainEventsActivity extends AppCompatActivity {
         return true;
     }
 
-    public void testMethod(View view){
+    public void goToThatEvent(View view){
         Intent intent = new Intent(this, CurrentEventActivity.class);
-        //TODO
-        intent.putExtra("Event ID","todo");
+        //TODO Test
+        intent.putExtra("Event ID", R.id.theid);
         startActivity(intent);
     }
 
