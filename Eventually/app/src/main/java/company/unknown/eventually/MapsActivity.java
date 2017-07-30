@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String u[] = {};
         //EventsEntity event = new EventsEntity("", "", u, "", ""); //TODO: fetchEvent
 
-        final String locationid = "";
+        final String locationid = "OsNCPc5URKSJwa5PsfnmHg";
         final LocationsEntity[] location = new LocationsEntity[1];
 
         RapidCollectionReference<EventsEntity> eventinstance = Rapid.getInstance().collection("events", EventsEntity.class);
