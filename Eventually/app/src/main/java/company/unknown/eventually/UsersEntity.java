@@ -17,10 +17,10 @@ public class UsersEntity {
     public String name;
 
     @SerializedName("email")
-    private String email;
+    public String email;
 
     @SerializedName("location")
-    private LocationsEntity location;
+    public LocationsEntity location;
 
 
     public UsersEntity() {}
