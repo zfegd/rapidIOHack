@@ -31,4 +31,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'io.rapid:rapid-sdk-android:1.0.3'
+    compile 'com.android.support:cardview-v7:21.0.+'
+    compile 'com.android.support:recyclerview-v7:21.0.+'
 }

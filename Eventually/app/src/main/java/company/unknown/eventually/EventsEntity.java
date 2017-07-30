@@ -6,6 +6,9 @@ package company.unknown.eventually;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class EventsEntity {
 
@@ -36,5 +39,5 @@ public class EventsEntity {
         this.locationid = locationid;
         this.date = date;
     }
-}
 
+}
