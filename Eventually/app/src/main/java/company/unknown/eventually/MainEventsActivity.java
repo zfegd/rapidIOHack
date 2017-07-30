@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,9 @@ import io.rapid.RapidDocument;
 
 public class MainEventsActivity extends AppCompatActivity {
 
+    private List<EventsEntity> events;
+    private RecyclerView rv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +42,18 @@ public class MainEventsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainEventsActivity.this, AddEventActivity.class);
                 startActivity(intent);
-                Log.e("Does it fail here?","Does it fail here?");
+             //   Log.e("Does it fail here?","Does it fail here?");
             }
         });
+
+        rv = (RecyclerView)findViewById(R.id.eventsListView);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+
+        initializeData();
+        initializeAdapter();
+
+        //Following template below, can edit to meet our needs
 
         final LinkedList<EventsEntity> toprint = new LinkedList<>();
 
@@ -55,6 +69,19 @@ public class MainEventsActivity extends AppCompatActivity {
         
         // TODO transform linkedlist (toprint) to a readable format
 
+    }
+
+
+    private void initializeData() {
+        events = new ArrayList<>();
+        events.add(new EventsEntity("1","Soccer",null,(new LocationsEntity("map","a",3.20f,4.80f)),"1000000"));
+        events.add(new EventsEntity("2","Swimming",null,(new LocationsEntity("map","b",3.20f,4.20f)),"1003000"));
+        events.add(new EventsEntity("3","Soccer",null,(new LocationsEntity("map","c",3.20f,4.80f)),"21000000"));
+    }
+
+    private void initializeAdapter() {
+        RVAdapter adapter = new RVAdapter(events);
+        rv.setAdapter(adapter);
     }
 
     @Override

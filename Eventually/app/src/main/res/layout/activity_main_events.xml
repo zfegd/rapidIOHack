@@ -42,46 +42,10 @@
         app:layout_anchor="@+id/include2"
         app:layout_anchorGravity="top|center_horizontal" />
 
-    <LinearLayout
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/eventNameShow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="Soccer"
-                    android:textSize="30sp" />
-
-                <TextView
-                    android:id="@+id/timeShow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/eventNameShow"
-                    android:text="1000"
-                    android:textSize="30sp" />
-
-                <TextView
-                    android:id="@+id/locationShow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/timeShow"
-                    android:text="People's Park"
-                    android:textSize="30sp" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/eventsListView"
+        />
 
 </android.support.design.widget.CoordinatorLayout>
