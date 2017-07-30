@@ -51,6 +51,7 @@ public class AddEventActivity extends AppCompatActivity {
         pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
 
         EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
+
         manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
 
         //TODO UPDATE COLLECTION
