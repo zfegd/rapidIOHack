@@ -15,14 +15,24 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class AddEventActivity extends AppCompatActivity {
 
     private EditText mName;
     private EditText mDate;
     private EditText mTime;
-    private EditText mLocation;
     private PendingIntent pIntent;
+    private Place place;
+
+    int PLACE_PICKER_REQUEST = 1;
+    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,28 +44,45 @@ public class AddEventActivity extends AppCompatActivity {
         mName = (EditText) findViewById(R.id.eventField);
         mDate = (EditText) findViewById(R.id.dateField);
         mTime = (EditText) findViewById(R.id.timeField);
-        mLocation = (EditText) findViewById(R.id.locationField);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
+    public void chooseLocation(View view){
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                place = PlacePicker.getPlace(data, this);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     public void eventAdded(View view){
 //        if(! isValid()){
 //            //TODO handle error message
 //        }
 //
-//        Context context = this;
-//        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-//        Intent timeTrackerIntent = new Intent(context, LocationTracking.class);
-//        pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
-//
-//        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
-//
-//        manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
-//
-//        //TODO UPDATE COLLECTION
+        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
+        String datetimeLong = dateAndTimeParser(mTime,mDate);
+        //TODO: args are mName.getText(), {} new LocationsEntity(id, place.getName(),place.getLatLng().latitude, place.getLatLng().longitude),datetimeLong)
+        Context context = this;
+        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent timeTrackerIntent = new Intent(context, LocationTracking.class);
+        pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
 
+        manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
+
+        //TODO UPDATE COLLECTION
 
         Intent intent = new Intent(this, MainEventsActivity.class);
         startActivity(intent);
@@ -64,7 +91,6 @@ public class AddEventActivity extends AppCompatActivity {
     private boolean isValid(){
         Editable date = mDate.getText();
         Editable time = mTime.getText();
-        // TODO CHECK IF location is valid in maps
         return (isDateValid(date) && isTimeValid(time));
     }
 
