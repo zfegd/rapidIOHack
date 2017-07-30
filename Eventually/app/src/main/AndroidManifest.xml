@@ -69,7 +69,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="company.unknown.eventually.MainEventsActivity" />
         </activity>
+        <service android:name=".LocationTracking"
+            android:exported="false"/>
     </application>
-    <service android:name=".LocationTracking" />
 
 </manifest>
