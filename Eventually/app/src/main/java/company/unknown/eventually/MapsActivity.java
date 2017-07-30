@@ -84,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void putEventIntoMap(GoogleMap googleMap, RapidDocument<EventsEntity> document, RapidDocument<LocationsEntity> locationdocument) {
+    private void putEventIntoMap(GoogleMap googleMap, final RapidDocument<EventsEntity> document, RapidDocument<LocationsEntity> locationdocument) {
         LocationsEntity location = locationdocument.getBody();
         LatLng eventLocation = new LatLng(location.lat, location.lon);
         mMap.addMarker(new MarkerOptions().position(eventLocation).title(locationdocument.getBody().name));
@@ -110,19 +110,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             dialog.show();
         } else {
-            for (String useremail : document.getBody().useremails) {
+            for (String useremail : document.getBody().userids) {
                 Rapid.getInstance().collection("users", UsersEntity.class).equalTo("email", useremail)
                         .fetch(new RapidCallback.Collection<UsersEntity>() {
                             @Override
                             public void onValueChanged(List<RapidDocument<UsersEntity>> rapidDocuments) {
-//                                rapidDocuments.get(0);
-//                                UsersEntity userBody = rapidDocuments.get(0).getBody();
-//                                RapidDocumentReference<LocationsEntity> locationDocument = Rapid.getInstance().collection("locations", LocationsEntity.class).document(userBody.locationid);
-//                                LocationsEntity locationBody = locationDocument.fetch(locationHelper()).getDocument().getBody();
+                                UsersEntity user = rapidDocuments.get(0).getBody();
+                                mMap.addMarker(new MarkerOptions().position(
+                                        new LatLng(user.location.lat, user.location.lon)).title(user.name));
                             }
                         });
-
-
             }
         }
     }

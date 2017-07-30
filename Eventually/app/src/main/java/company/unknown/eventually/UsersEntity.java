@@ -19,19 +19,23 @@ public class UsersEntity {
     @SerializedName("email")
     public String email;
 
-    @SerializedName("location")
+    @SerializedName("locationid")
     public String locationid;
+
+    @SerializedName("LocationEntity")
+    public LocationsEntity location;
 
 
     public UsersEntity() {
     }
 
 
-    public UsersEntity(String id, String name, String email, String locationid) {
+    public UsersEntity(String id, String name, String email, String locationid, LocationsEntity location) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.locationid = locationid;
+        this.location = location;
     }
 
     /* Unused from Thomas's Skeleton Code - Wen Rui
