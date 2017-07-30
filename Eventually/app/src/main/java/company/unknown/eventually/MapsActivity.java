@@ -1,6 +1,7 @@
 package company.unknown.eventually;
 
 import android.content.DialogInterface;
+import android.icu.util.Calendar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Date;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,14 +44,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //TODO: let event = fetchEvent
+        String u[] = {};
+        EventsEntity event = new EventsEntity("", "", u, new LocationsEntity("","",0f,0f)); //TODO: fetchEvent
 
         // Add a marker at event location and move the camera
-        LatLng eventLocation = new LatLng(-34, 151); // TODO: event.lat, event.lng
-        mMap.addMarker(new MarkerOptions().position(eventLocation).title("New event")); // TODO: event.title
+        LatLng eventLocation = new LatLng(event.location.lat, event.location.lon);
+        mMap.addMarker(new MarkerOptions().position(eventLocation).title(event.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
 
-        if (true) { //TODO: time.now < event.time + 30
+        Date startThresh = new Date(Long.parseLong(event.date + 30*60*1000));
+        if (Calendar.getInstance().getTime().before(startThresh)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.event_early_dialog_message);
             builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -66,10 +71,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             wmlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
             dialog.show();
-
         } else {
-            // for user : event.users
-                // mMap.addMarker(new MarkerOptions().position(new LatLng(user.lat, user.lng)).title(user.name)
+            for (String userId : event.userids) {
+                UsersEntity user = new UsersEntity("","","", new LocationsEntity("","",0f,0f)); // TODO: fetch userId
+                mMap.addMarker(new MarkerOptions().position(
+                        new LatLng(user.location.lat, user.location.lon)).title(user.name));
+            }
         }
     }
 
