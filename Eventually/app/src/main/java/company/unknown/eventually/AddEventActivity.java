@@ -12,15 +12,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 public class AddEventActivity extends AppCompatActivity {
 
-    private EditText mName = (EditText) findViewById(R.id.eventField);
-    private EditText mDate = (EditText) findViewById(R.id.dateField);
-    private EditText mTime = (EditText) findViewById(R.id.timeField);
-    private EditText mLocation = (EditText) findViewById(R.id.locationField);
+    private EditText mName;
+    private EditText mDate;
+    private EditText mTime;
+    private EditText mLocation;
     private PendingIntent pIntent;
 
     @Override
@@ -29,6 +30,11 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mName = (EditText) findViewById(R.id.eventField);
+        mDate = (EditText) findViewById(R.id.dateField);
+        mTime = (EditText) findViewById(R.id.timeField);
+        mLocation = (EditText) findViewById(R.id.locationField);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
