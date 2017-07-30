@@ -7,6 +7,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
+
+import io.rapid.Rapid;
+import io.rapid.RapidCallback;
+import io.rapid.RapidCollectionReference;
+import io.rapid.RapidDocument;
+import io.rapid.RapidDocumentReference;
 
 public class CurrentEventActivity extends AppCompatActivity {
 
@@ -21,6 +28,15 @@ public class CurrentEventActivity extends AppCompatActivity {
 
         eventID = getIntent().getStringExtra("Event ID");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        RapidDocumentReference<EventsEntity> event = Rapid.getInstance().collection("events", EventsEntity.class).document(eventID);
+        event.fetch(new RapidCallback.Document<EventsEntity>() {
+            @Override
+            public void onValueChanged(final RapidDocument<EventsEntity> document) {
+                TextView textToChange = (TextView) findViewById(R.id.eventNameView);
+                textToChange.setText(document.getBody().name);
+            }
+        });
     }
 
     public void gotoMap(View view){
