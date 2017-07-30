@@ -65,5 +65,6 @@
                 android:value="company.unknown.eventually.MainEventsActivity" />
         </activity>
     </application>
+    <service android:name=".LocationTracking" />
 
 </manifest>
