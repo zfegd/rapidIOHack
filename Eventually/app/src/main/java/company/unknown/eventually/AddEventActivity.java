@@ -22,6 +22,9 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import io.rapid.Rapid;
+import io.rapid.RapidDocumentReference;
+
 public class AddEventActivity extends AppCompatActivity {
 
     private EditText mName;
@@ -71,9 +74,18 @@ public class AddEventActivity extends AppCompatActivity {
 //        if(! isValid()){
 //            //TODO handle error message
 //        }
+        String datetimeLong = dateAndTimeParser(mTime.getText(),mDate.getText());
+        // TODO add item
+        // Add location object to the locations collection
+        RapidDocumentReference<LocationsEntity> newLocation = Rapid.getInstance().collection("locations", LocationsEntity.class).newDocument();
+        newLocation.mutate(new LocationsEntity(newLocation.getId(), mName.getText(), place.getName(), (float)place.getLatLng().latitude, (float)place.getLatLng().longitude));
+
+        // Add event object to the events collection
+        RapidDocumentReference<EventsEntity> newEvent = Rapid.getInstance().collection("events", EventsEntity.class).newDocument();
+        newEvent.mutate(new EventsEntity(newEvent.getId(), mName.getText().toString(), null, newLocation.getId(), datetimeLong));
+
 //
-        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
-        String datetimeLong = dateAndTimeParser(mTime,mDate);
+        EventsEntity event = new EventsEntity(newEvent.getId(), mName.getText().toString(), null, newLocation.getId(), datetimeLong); //TODO: fetchEvent
         //TODO: args are mName.getText(), {} new LocationsEntity(id, place.getName(),place.getLatLng().latitude, place.getLatLng().longitude),datetimeLong)
         Context context = this;
         AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);

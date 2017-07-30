@@ -19,8 +19,8 @@ public class EventsEntity {
     @SerializedName("userids")
     public String[] userids;
 
-    @SerializedName("location")
-    public LocationsEntity location;
+    @SerializedName("locationid")
+    public String locationid;
 
     @SerializedName("date")
     public String date;
@@ -29,11 +29,11 @@ public class EventsEntity {
     public EventsEntity() {}
 
 
-    public EventsEntity(String id, String name, String[] userids, LocationsEntity location, String date) {
+    public EventsEntity(String id, String name, String[] userids, String locationid, String date) {
         this.id = id;
         this.name = name;
         this.userids = userids;
-        this.location = location;
+        this.locationid = locationid;
         this.date = date;
     }
 }
