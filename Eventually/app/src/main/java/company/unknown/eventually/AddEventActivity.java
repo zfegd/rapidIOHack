@@ -71,9 +71,10 @@ public class AddEventActivity extends AppCompatActivity {
         }
     }
     public void eventAdded(View view){
-//        if(! isValid()){
-//            //TODO handle error message
-//        }
+        if(! isValid()){
+            Toast.makeText(this,"Please input a valid date and time",Toast.LENGTH_SHORT).show();
+            return;
+        }
         String datetimeLong = dateAndTimeParser(mTime.getText(),mDate.getText());
         // TODO add item
         // Add location object to the locations collection
