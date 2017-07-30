@@ -23,7 +23,8 @@ public class UsersEntity {
     public String locationid;
 
 
-    public UsersEntity() {}
+    public UsersEntity() {
+    }
 
 
     public UsersEntity(String id, String name, String email, String locationid) {

@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,34 +47,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         eventID = getIntent().getStringExtra("Event ID");
     }
 
-
-    private RapidCallback.Document<EventsEntity> helperFunction(){
-        return new RapidCallback.Document<EventsEntity>() {
-            @Override
-            public void onValueChanged(RapidDocument<EventsEntity> document) {
-                document.getBody();
-            }
-        };
-    }
-
-    private RapidCallback.Document<LocationsEntity> locationHelper(){
-        return new RapidCallback.Document<LocationsEntity>() {
-            @Override
-            public void onValueChanged(RapidDocument<LocationsEntity> document) {
-                document.getBody();
-            }
-        };
-    }
-
-    private RapidCallback.Document<UsersEntity> userHelper(){
-        return new RapidCallback.Document<UsersEntity>() {
-            @Override
-            public void onValueChanged(RapidDocument<UsersEntity> document) {
-                document.getBody();
-            }
-        };
-    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -84,34 +57,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
         String u[] = {};
         //EventsEntity event = new EventsEntity("", "", u, "", ""); //TODO: fetchEvent
 
-
+        final String locationid = "";
+        final LocationsEntity[] location = new LocationsEntity[1];
 
         RapidCollectionReference<EventsEntity> eventinstance = Rapid.getInstance().collection("events", EventsEntity.class);
         //RapidDocumentReference<EventsEntity> event = eventinstance.document(eventID);
-        RapidDocumentReference<EventsEntity> event = Rapid.getInstance().collection("events", EventsEntity.class).document(eventID);
-        EventsEntity eventBody = event.fetch(helperFunction()).getDocument().getBody();
+        final RapidDocumentReference<EventsEntity> event = Rapid.getInstance().collection("events", EventsEntity.class).document(eventID);
+        event.fetch(new RapidCallback.Document<EventsEntity>() {
+            @Override
+            public void onValueChanged(final RapidDocument<EventsEntity> document) {
+                Rapid.getInstance()
+                        .collection("locations", LocationsEntity.class)
+                        .document(locationid)
+                        .fetch(new RapidCallback.Document<LocationsEntity>() {
+                            @Override
+                            public void onValueChanged(RapidDocument<LocationsEntity> locationdocument) {
+                                putEventIntoMap(googleMap, document, locationdocument);
+                            }
+                        });
+            }
+        });
+    }
 
-        String locationid = new String();
-
-        locationid = eventBody.locationid;
-        // Rapid.getInstance().collection("events", EventsEntity.class).document(eventID).fetch(helperFunction());
-
-        // Add a marker at event location and move the camera
-        //LatLng eventLocation = new LatLng(event.locationid.lat, event.locationid.lon);
-        //TODO: Replace with the locationid coordinates
-        RapidDocumentReference<LocationsEntity> location = Rapid.getInstance().collection("locations", LocationsEntity.class).document(locationid);
-        LatLng eventLocation = new LatLng(location.fetch(locationHelper()).getDocument().getBody().lat, location.fetch(locationHelper()).getDocument().getBody().lon);
-        mMap.addMarker(new MarkerOptions().position(eventLocation).title(eventBody.name));
+    private void putEventIntoMap(GoogleMap googleMap, RapidDocument<EventsEntity> document, RapidDocument<LocationsEntity> locationdocument) {
+        LocationsEntity location = locationdocument.getBody();
+        LatLng eventLocation = new LatLng(location.lat, location.lon);
+        mMap.addMarker(new MarkerOptions().position(eventLocation).title(locationdocument.getBody().name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
+        Date startThresh = new Date(Long.parseLong(document.getBody().date + 30 * 60 * 1000));
 
-        Date startThresh = new Date(Long.parseLong(eventBody.date + 30*60*1000));
-        if (Calendar.getInstance().getTime().before(startThresh)){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (Calendar.getInstance().getTime().before(startThresh)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
             builder.setMessage(R.string.event_early_dialog_message);
             builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -129,21 +110,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             dialog.show();
         } else {
-            for (String userId : eventBody.userids) {
-                RapidDocumentReference<UsersEntity> users = Rapid.getInstance().collection("users", UsersEntity.class).document(userId);
-                UsersEntity userBody = users.fetch(userHelper()).getDocument().getBody();
-                RapidDocumentReference<LocationsEntity> locationDocument = Rapid.getInstance().collection("locations", LocationsEntity.class).document(userBody.locationid);
-                LocationsEntity  locationBody = locationDocument.fetch(locationHelper()).getDocument().getBody();
-                /*
-                UsersEntity user = users.
-                        new UsersEntity("","","", new LocationsEntity("","","",0f,0f)); // TODO: fetch userId
-                */
+            for (String useremail : document.getBody().useremails) {
+                Rapid.getInstance().collection("users", UsersEntity.class).equalTo("email", useremail)
+                        .fetch(new RapidCallback.Collection<UsersEntity>() {
+                            @Override
+                            public void onValueChanged(List<RapidDocument<UsersEntity>> rapidDocuments) {
+//                                rapidDocuments.get(0);
+//                                UsersEntity userBody = rapidDocuments.get(0).getBody();
+//                                RapidDocumentReference<LocationsEntity> locationDocument = Rapid.getInstance().collection("locations", LocationsEntity.class).document(userBody.locationid);
+//                                LocationsEntity locationBody = locationDocument.fetch(locationHelper()).getDocument().getBody();
+                            }
+                        });
 
-                mMap.addMarker(new MarkerOptions().position(
-                        new LatLng(locationBody.lat, locationBody.lon)).title(userBody.name));
+
             }
         }
     }
-
-
 }
