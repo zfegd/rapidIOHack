@@ -29,11 +29,12 @@ public class EventsEntity {
     public EventsEntity() {}
 
 
-    public EventsEntity(String id, String name, String[] userids, LocationsEntity location) {
+    public EventsEntity(String id, String name, String[] userids, LocationsEntity location, String date) {
         this.id = id;
         this.name = name;
         this.userids = userids;
         this.location = location;
+        this.date = date;
     }
 }
 
