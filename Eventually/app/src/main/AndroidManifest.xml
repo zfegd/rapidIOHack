@@ -21,6 +21,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="io.rapid.apikey"
+            android:value="NDA1OWE0MWo1b3AzYTA1LnJhcGlkLmlv" /> <!--wen rui API Key -->
+
         <activity
             android:name=".MainEventsActivity"
             android:label="@string/app_name"
