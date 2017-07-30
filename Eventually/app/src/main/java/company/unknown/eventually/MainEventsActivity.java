@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-<<<<<<< HEAD
-=======
 import android.util.Log;
 import android.view.View;
->>>>>>> aae90a6876a35f6e745425e32ec4f8d0fe489131
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +40,7 @@ public class MainEventsActivity extends AppCompatActivity {
                 Log.e("Does it fail here?","Does it fail here?");
             }
         });
+
         final LinkedList<EventsEntity> toprint = new LinkedList<>();
 
         RapidCollectionReference<EventsEntity> events = Rapid.getInstance().collection("events", EventsEntity.class);
