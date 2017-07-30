@@ -46,18 +46,15 @@ public class MainEventsActivity extends AppCompatActivity {
         });
 
 
-
-        AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-        Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
-
-        startService(timeTrackerIntent);
-
-//        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, timeTrackerIntent, 0);
+//        AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+//        Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
+//
+//        PendingIntent pIntent = PendingIntent.getService(this, 0, timeTrackerIntent, 0);
 //
 //        //manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
 //        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 20, pIntent);
-
-        Log.e("Test", String.valueOf(System.currentTimeMillis()));
+//
+//        Log.e("Test", String.valueOf(System.currentTimeMillis()));
 
 
 

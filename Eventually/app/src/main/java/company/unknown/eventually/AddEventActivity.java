@@ -91,7 +91,7 @@ public class AddEventActivity extends AppCompatActivity {
         //TODO: args are mName.getText(), {} new LocationsEntity(id, place.getName(),place.getLatLng().latitude, place.getLatLng().longitude),datetimeLong)
         AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
-        pIntent = PendingIntent.getBroadcast(this, 0, timeTrackerIntent, 0);
+        pIntent = PendingIntent.getService(this, 0, timeTrackerIntent, 0);
 
         //manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
         manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3 * 1000, pIntent);
