@@ -93,10 +93,11 @@ public class AddEventActivity extends AppCompatActivity {
         AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
         timeTrackerIntent.putExtra("Event ID", event.id);
+
         pIntent = PendingIntent.getService(this, 0, timeTrackerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
-        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3 * 1000, pIntent);
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pIntent);
 
         //TODO UPDATE COLLECTION
 
