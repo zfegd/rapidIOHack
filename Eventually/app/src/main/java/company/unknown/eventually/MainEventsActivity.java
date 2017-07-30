@@ -1,7 +1,11 @@
 package company.unknown.eventually;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +44,23 @@ public class MainEventsActivity extends AppCompatActivity {
                 Log.e("Does it fail here?","Does it fail here?");
             }
         });
+
+
+
+        AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
+
+        startService(timeTrackerIntent);
+
+//        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, timeTrackerIntent, 0);
+//
+//        //manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
+//        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 20, pIntent);
+
+        Log.e("Test", String.valueOf(System.currentTimeMillis()));
+
+
+
 
         final LinkedList<EventsEntity> toprint = new LinkedList<>();
 
