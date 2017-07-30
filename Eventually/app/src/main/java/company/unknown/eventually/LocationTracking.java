@@ -25,6 +25,9 @@ public class LocationTracking extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.v("Entered","Here");
+        String thisID = intent.getStringExtra("Event ID");
+        Log.v(thisID,thisID);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
