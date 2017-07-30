@@ -1,8 +1,10 @@
 package company.unknown.eventually;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.icu.util.Calendar;
 import android.os.SystemClock;
 import java.util.Date;
 import android.content.Intent;
@@ -87,12 +89,12 @@ public class AddEventActivity extends AppCompatActivity {
 //
         EventsEntity event = new EventsEntity(newEvent.getId(), mName.getText().toString(), null, newLocation.getId(), datetimeLong); //TODO: fetchEvent
         //TODO: args are mName.getText(), {} new LocationsEntity(id, place.getName(),place.getLatLng().latitude, place.getLatLng().longitude),datetimeLong)
-        Context context = this;
-        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent timeTrackerIntent = new Intent(context, LocationTracking.class);
-        pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
+        AlarmManager manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        Intent timeTrackerIntent = new Intent(this, LocationTracking.class);
+        pIntent = PendingIntent.getBroadcast(this, 0, timeTrackerIntent, 0);
 
-        manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
+        //manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3 * 1000, pIntent);
 
         //TODO UPDATE COLLECTION
 
