@@ -4,7 +4,6 @@ package company.unknown.eventually;
  * Created by Wen Rui on 7/29/2017.
  */
 
-import android.text.Editable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -15,6 +14,7 @@ public class LocationsEntity {
     @SerializedName("mapid")
     public String mapid;
 
+    //can be event or user name
     @SerializedName("name")
     public String name;
 
@@ -28,7 +28,7 @@ public class LocationsEntity {
     public Float lon;
 
 
-    public LocationsEntity(String id, Editable text, CharSequence name, float latitude, float longitude) {}
+    public LocationsEntity() {}
 
     //name can be either the user or event name
     public LocationsEntity(String mapid, String name, String locationname, Float lat, Float lon) {
