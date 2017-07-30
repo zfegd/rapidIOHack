@@ -3,12 +3,22 @@ package company.unknown.eventually;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import io.rapid.ListUpdate;
+import io.rapid.Rapid;
+import io.rapid.RapidCallback;
+import io.rapid.RapidCollectionReference;
+import io.rapid.RapidDocument;
+
 
 public class MainEventsActivity extends AppCompatActivity {
 
@@ -27,8 +37,20 @@ public class MainEventsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        final LinkedList<EventsEntity> toprint = new LinkedList<>();
 
-        // TODO sHOW LISt of events
+        RapidCollectionReference<EventsEntity> events = Rapid.getInstance().collection("events", EventsEntity.class);
+        events.subscribeWithListUpdates(new RapidCallback.CollectionUpdates<EventsEntity>() {
+            @Override
+            public void onValueChanged(List<RapidDocument<EventsEntity>> rapidDocuments, ListUpdate listUpdate) {
+                for (RapidDocument<EventsEntity> rapidDocument : rapidDocuments) {
+                    toprint.addLast(new EventsEntity(rapidDocument.getBody().id, rapidDocument.getBody().name,
+                            rapidDocument.getBody().userids, rapidDocument.getBody().location,rapidDocument.getBody().date));}
+            }
+        });
+        
+        // TODO transform linkedlist (toprint) to a readable format
+
     }
 
     @Override
@@ -57,4 +79,6 @@ public class MainEventsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
