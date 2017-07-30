@@ -20,10 +20,10 @@ public class EventsEntity {
     public String[] userids;
 
     @SerializedName("location")
-    private LocationsEntity location;
+    public LocationsEntity location;
 
     @SerializedName("date")
-    private String date;
+    public String date;
 
 
     public EventsEntity() {}

@@ -17,10 +17,10 @@ public class LocationsEntity {
     public String userid;
 
     @SerializedName("lat")
-    private Float lat;
+    public Float lat;
 
     @SerializedName("lon")
-    private Float lon;
+    public Float lon;
 
 
     public LocationsEntity() {}
