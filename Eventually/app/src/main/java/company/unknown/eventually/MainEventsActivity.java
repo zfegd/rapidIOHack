@@ -1,5 +1,9 @@
 package company.unknown.eventually;
 
+import android.*;
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +28,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import io.rapid.ListUpdate;
 import io.rapid.Rapid;
@@ -34,6 +40,7 @@ import io.rapid.RapidDocument;
 public class MainEventsActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 205;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_GET_ACCOUNTS = 206;
     private List<EventsEntity> events;
     private RecyclerView rv;
 
@@ -60,6 +67,14 @@ public class MainEventsActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+
+        permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.GET_ACCOUNTS);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.GET_ACCOUNTS},
+                    MY_PERMISSIONS_REQUEST_ACCESS_GET_ACCOUNTS);
         }
 
         rv = (RecyclerView)findViewById(R.id.eventsListView);
@@ -106,7 +121,34 @@ public class MainEventsActivity extends AppCompatActivity {
                 }
                 return;
             }
+            case MY_PERMISSIONS_REQUEST_ACCESS_GET_ACCOUNTS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.i("Accounts", "Account permissions granted");
+                        Log.i("AccountFound", getUserEmail());
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    Log.e("Accounts", "Account permissions not granted");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
         }
+    }
+
+    public String getUserEmail() {
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                String possibleEmail = account.name;
+                return possibleEmail;
+            }
+        }
+        return "";
     }
 
     private void initializeData() {
