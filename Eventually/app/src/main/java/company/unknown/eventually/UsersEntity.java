@@ -20,17 +20,17 @@ public class UsersEntity {
     public String email;
 
     @SerializedName("location")
-    public LocationsEntity location;
+    public String locationid;
 
 
     public UsersEntity() {}
 
 
-    public UsersEntity(String id, String name, String email, LocationsEntity location) {
+    public UsersEntity(String id, String name, String email, String locationid) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.location = location;
+        this.locationid = locationid;
     }
 
     /* Unused from Thomas's Skeleton Code - Wen Rui

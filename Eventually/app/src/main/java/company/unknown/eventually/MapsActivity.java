@@ -16,9 +16,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Date;
+import java.util.List;
 
+import io.rapid.ListUpdate;
 import io.rapid.Rapid;
+import io.rapid.RapidCallback;
 import io.rapid.RapidCollectionReference;
+import io.rapid.RapidDocument;
+import io.rapid.RapidDocumentReference;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,9 +44,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //might be the wrong datastring
         eventID = getIntent().getStringExtra("Event ID");
-
     }
 
+
+    private RapidCallback.Document<EventsEntity> helperFunction(){
+        return new RapidCallback.Document<EventsEntity>() {
+            @Override
+            public void onValueChanged(RapidDocument<EventsEntity> document) {
+                document.getBody();
+            }
+        };
+    }
+
+    private RapidCallback.Document<LocationsEntity> locationHelper(){
+        return new RapidCallback.Document<LocationsEntity>() {
+            @Override
+            public void onValueChanged(RapidDocument<LocationsEntity> document) {
+                document.getBody();
+            }
+        };
+    }
+
+    private RapidCallback.Document<UsersEntity> userHelper(){
+        return new RapidCallback.Document<UsersEntity>() {
+            @Override
+            public void onValueChanged(RapidDocument<UsersEntity> document) {
+                document.getBody();
+            }
+        };
+    }
 
     /**
      * Manipulates the map once available.
@@ -54,17 +87,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         String u[] = {};
-        EventsEntity event = new EventsEntity("", "", u, "", ""); //TODO: fetchEvent
+        //EventsEntity event = new EventsEntity("", "", u, "", ""); //TODO: fetchEvent
 
+
+
+        RapidCollectionReference<EventsEntity> eventinstance = Rapid.getInstance().collection("events", EventsEntity.class);
+        //RapidDocumentReference<EventsEntity> event = eventinstance.document(eventID);
+        RapidDocumentReference<EventsEntity> event = Rapid.getInstance().collection("events", EventsEntity.class).document(eventID);
+        EventsEntity eventBody = event.fetch(helperFunction()).getDocument().getBody();
+
+        String locationid = new String();
+
+        locationid = eventBody.locationid;
+        // Rapid.getInstance().collection("events", EventsEntity.class).document(eventID).fetch(helperFunction());
 
         // Add a marker at event location and move the camera
         //LatLng eventLocation = new LatLng(event.locationid.lat, event.locationid.lon);
         //TODO: Replace with the locationid coordinates
-        LatLng eventLocation = new LatLng(132.000000, 132.000000);
-        mMap.addMarker(new MarkerOptions().position(eventLocation).title(event.name));
+        RapidDocumentReference<LocationsEntity> location = Rapid.getInstance().collection("locations", LocationsEntity.class).document(locationid);
+        LatLng eventLocation = new LatLng(location.fetch(locationHelper()).getDocument().getBody().lat, location.fetch(locationHelper()).getDocument().getBody().lon);
+        mMap.addMarker(new MarkerOptions().position(eventLocation).title(eventBody.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
 
-        Date startThresh = new Date(Long.parseLong(event.date + 30*60*1000));
+        Date startThresh = new Date(Long.parseLong(eventBody.date + 30*60*1000));
         if (Calendar.getInstance().getTime().before(startThresh)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.event_early_dialog_message);
@@ -84,10 +129,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             dialog.show();
         } else {
-            for (String userId : event.userids) {
-                UsersEntity user = new UsersEntity("","","", new LocationsEntity("","","",0f,0f)); // TODO: fetch userId
+            for (String userId : eventBody.userids) {
+                RapidDocumentReference<UsersEntity> users = Rapid.getInstance().collection("users", UsersEntity.class).document(userId);
+                UsersEntity userBody = users.fetch(userHelper()).getDocument().getBody();
+                RapidDocumentReference<LocationsEntity> locationDocument = Rapid.getInstance().collection("locations", LocationsEntity.class).document(userBody.locationid);
+                LocationsEntity  locationBody = locationDocument.fetch(locationHelper()).getDocument().getBody();
+                /*
+                UsersEntity user = users.
+                        new UsersEntity("","","", new LocationsEntity("","","",0f,0f)); // TODO: fetch userId
+                */
+
                 mMap.addMarker(new MarkerOptions().position(
-                        new LatLng(user.location.lat, user.location.lon)).title(user.name));
+                        new LatLng(locationBody.lat, locationBody.lon)).title(userBody.name));
             }
         }
     }
