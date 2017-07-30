@@ -41,20 +41,20 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     public void eventAdded(View view){
-        if(! isValid()){
-            //TODO handle error message
-        }
-
-        Context context = this;
-        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent timeTrackerIntent = new Intent(context, LocationTracking.class);
-        pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
-
-        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
-
-        manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
-
-        //TODO UPDATE COLLECTION
+//        if(! isValid()){
+//            //TODO handle error message
+//        }
+//
+//        Context context = this;
+//        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+//        Intent timeTrackerIntent = new Intent(context, LocationTracking.class);
+//        pIntent = PendingIntent.getBroadcast(context, 0, timeTrackerIntent, 0);
+//
+//        EventsEntity event = new EventsEntity("", "", null, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
+//
+//        manager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(event.date) - 30*60*1000, pIntent);
+//
+//        //TODO UPDATE COLLECTION
 
 
         Intent intent = new Intent(this, MainEventsActivity.class);
