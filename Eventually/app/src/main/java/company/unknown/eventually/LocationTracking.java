@@ -89,7 +89,6 @@ public class LocationTracking extends IntentService {
         Log.i("Me", "finished location updates");
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         // TODO: save state? https://developer.android.com/training/location/receive-location-updates.html#save-state
-
     }
 
     protected void createLocationRequest() {
