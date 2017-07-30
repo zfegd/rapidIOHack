@@ -49,7 +49,7 @@ public class MainEventsActivity extends AppCompatActivity {
             public void onValueChanged(List<RapidDocument<EventsEntity>> rapidDocuments, ListUpdate listUpdate) {
                 for (RapidDocument<EventsEntity> rapidDocument : rapidDocuments) {
                     toprint.addLast(new EventsEntity(rapidDocument.getBody().id, rapidDocument.getBody().name,
-                            rapidDocument.getBody().userids, rapidDocument.getBody().location,rapidDocument.getBody().date));}
+                            rapidDocument.getBody().userids, rapidDocument.getBody().locationid,rapidDocument.getBody().date));}
             }
         });
         

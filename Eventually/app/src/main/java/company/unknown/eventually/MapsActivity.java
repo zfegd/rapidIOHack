@@ -45,10 +45,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         String u[] = {};
-        EventsEntity event = new EventsEntity("", "", u, new LocationsEntity("","",0f,0f), ""); //TODO: fetchEvent
+        EventsEntity event = new EventsEntity("", "", u, "", ""); //TODO: fetchEvent
+
 
         // Add a marker at event location and move the camera
-        LatLng eventLocation = new LatLng(event.location.lat, event.location.lon);
+        //LatLng eventLocation = new LatLng(event.locationid.lat, event.locationid.lon);
+        //TODO: Replace with the locationid coordinates
+        LatLng eventLocation = new LatLng(132.000000, 132.000000);
         mMap.addMarker(new MarkerOptions().position(eventLocation).title(event.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
 
@@ -73,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dialog.show();
         } else {
             for (String userId : event.userids) {
-                UsersEntity user = new UsersEntity("","","", new LocationsEntity("","",0f,0f)); // TODO: fetch userId
+                UsersEntity user = new UsersEntity("","","", new LocationsEntity("","","",0f,0f)); // TODO: fetch userId
                 mMap.addMarker(new MarkerOptions().position(
                         new LatLng(user.location.lat, user.location.lon)).title(user.name));
             }
