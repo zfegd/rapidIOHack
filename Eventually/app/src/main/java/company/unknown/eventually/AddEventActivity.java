@@ -78,7 +78,7 @@ public class AddEventActivity extends AppCompatActivity {
         // TODO add item
         // Add location object to the locations collection
         RapidDocumentReference<LocationsEntity> newLocation = Rapid.getInstance().collection("locations", LocationsEntity.class).newDocument();
-        newLocation.mutate(new LocationsEntity(newLocation.getId(), mName.getText(), place.getName(), (float)place.getLatLng().latitude, (float)place.getLatLng().longitude));
+        newLocation.mutate(new LocationsEntity(newLocation.getId(), mName.getText().toString(), place.getName().toString(), (float)place.getLatLng().latitude, (float)place.getLatLng().longitude));
 
         // Add event object to the events collection
         RapidDocumentReference<EventsEntity> newEvent = Rapid.getInstance().collection("events", EventsEntity.class).newDocument();
